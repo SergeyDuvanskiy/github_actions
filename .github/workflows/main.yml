@@ -1,7 +1,7 @@
 name: CI_CD_pipline_to_AWS_Elastic_Beanstalk
 
 env:
-  EB_PACKAGE_S3_BUCKET_NAME : "sergey-django-githubactions" #S3 bucket name where to stopre zip file
+  EB_PACKAGE_S3_BUCKET_NAME : "sergey-django-github-actions" #S3 bucket name where to stopre zip file
   EB_APPLICATION_NAME       : "Flask"
   EB_ENVIRONMENT_NAME       : "Flask-env"
   DEPLOY_PACKAGE_NAME       : "app_${{github.sha}}" #github.sha - hash of commit
