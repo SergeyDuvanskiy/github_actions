@@ -1,0 +1,33 @@
+name: CI_CD_pipline_to_AWS_Elastic_Beanstalk
+
+env:
+  EB_PACKAGE_S3_BUCKET_NAME : "sergey-duvanskiy-flask-git-actions" #S3 bucket name where to stopre zip file
+  EB_APPLICATION_NAME       : "Flask"
+  EB_ENVIRONMENT_NAME       : "Flask-env"
+  DEPLOY_PACKAGE_NAME       : "django_app_${{github.sha}}" #github.sha - hash of commit
+  AWS_REGION                : "us-east-1"
+
+on:
+# Triggers the workflow on push events but only for the main branch
+  push:
+    branches:
+      - master
+
+
+
+jobs:
+  ci_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone the repo
+        uses: actions/checkout@v2
+      
+      
+      - name: Create ZIP package for deplyment
+        run : zip -r ${{env.DEPLY_PACKAGE_NAME}} ./ -x *.git*
+        
+      
+      
+
+
