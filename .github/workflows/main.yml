@@ -16,7 +16,7 @@ on:
 
 
 jobs:
-  ci_cd_job:
+  ci_job:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,15 +26,14 @@ jobs:
       - name: Create ZIP package for deplyment
         run : zip -r ${{env.DEPLOY_PACKAGE_NAME}}.zip . -x *.git*
       
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v16
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws_access_key: ${{ secrets.GA_AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.GA_SECRET_KEY }}
-          application_name: ${{ EB_APPLICATION_NAME }}
-          environment_name: ${{ EB_ENVIRONMENT_NAME }}
-          version_label: 2
-          region: ${{AWS_REGION}}
-          deployment_package: ${{env.DEPLOY_PACKAGE_NAME}}.zip
+          aws-access-key-id     :  ${{secrets.GA_AWS_ACCESS_KEY}}
+          aws-secret-access-key :  ${{secrets.GA_AWS_SECRET_KEY}}
+          aws-region            :  ${{env.AWS_REGION}}
+      
+      - name: Copy deployment package to S3 bucket
+        run : aws s3 cp ${{env.DEPLOY_PACKAGE_NAME}}.zip s3://${{env.EB_PACKAGE_S3_BUCKET_NAME}}/
 
 
